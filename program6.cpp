@@ -1,3 +1,11 @@
+//File name: program6.cpp
+//Author: Elise Chavez
+//Student ID: e837r258
+//Assignment Number: 6
+//Description: Uses an array of numbers to store pre-calculated values of the sine function of certain values, and can then display values of various different formulas further calculated from the score values
+//Last Changed: July 17, 2017
+
+
 #include <iostream> //allows you to use cin and cout
 #include <cmath>  //allows you to calculate with sine function
 #include <cstdlib> //use exit function
@@ -9,29 +17,26 @@ double sine_values[SIZE];
 
 //FUNCTION DECLARATIONS
 
-void fill_array(double array[], int SIZE); //no user input or output to screen--merely fills the array with numbers
+void fill_array(double array[]); //no user input or output to screen--merely fills the array with numbers
 void display_options(void); //will display options
 void choose_option(int& option); //user makes selection, which is stored to option (the condition of the while loop), and option is the int value returned by the function
  
 void initialize_option_1(double& a); //prompts user to initialize a for the equation, from the keyboard. updates the value of a
-void calculate_option_1(double a, double& y); //returns the value of y (calculated)
-void display_option_1(void); //uses cout to display results of calculation 1
+void calculate_option_1(double a); //multiplies pre-calculated sine valley with a, and displays results
 
 void initialize_option_2(double& b); //prompts user to initialize b for the equation, from the keyboard. updates the value of b
-void calculate_option_2(double b, double& y); //returns the value of y (calculated)
-void display_option_2(void); //uses cout to display results of calculation 2
+void calculate_option_2(double b); //adds pre-calculated sine valley with b, and displays results
 
 void initialize_option_3(double& a, double& b); //prompts user to initialize a and b for the equation. updates a and b
-void calculate_option_3(double a, double b, double& y); //returns the calculated value of y
-void display_option_3(void); //uses cout to display resluts of calcluation 3
+void calculate_option_3(double a, double b); //multiplies pre-calculated sine valley with a, adds b, and displays results
 
 int main()
 {
 
 int start = 0, option; //condition for making the program loop
-double a = 0, b = 0, y = 0;
+double a = 0, b = 0;
 
-fill_array(sine_values, SIZE); //don't use brackets next to the array in the function call!!
+fill_array(sine_values); //don't use brackets next to the array in the function call!! //also don't need to include SIZE parameter bc SIZE is included when the array is declared
 
 	while (start == 0)
 	{
@@ -42,23 +47,19 @@ fill_array(sine_values, SIZE); //don't use brackets next to the array in the fun
 		if (option == 1)
 		{
 			initialize_option_1(a);
-			calculate_option_1(a,y);
-			display_option_1();
-
+			calculate_option_1(a);
 			start = 0; //doesn't prompt user to start over, it just does once the selected option is finished.
 		}
 		else if (option == 2)
 		{
 			initialize_option_2(b);
-			calculate_option_2(b,y);
-			display_option_2();
+			calculate_option_2(b);
 			start = 0;
 		}
 		else if (option == 3)
 		{
-			initialize_option_3(a, b);
-			calculate_option_3(a,b,y);
-			display_option_3();
+			initialize_option_3(a,b);
+			calculate_option_3(a,b);
 			start = 0;
 		}	
 		else if (option == 4) //option to quit. 
@@ -75,13 +76,13 @@ return 0;
 
 
 //FUNCTION DEFINITIONS
-void fill_array(double array[], int SIZE) //function before while loop is entered, fills the array with index values
+void fill_array(double array[]) //function before while loop is entered, fills the array with index values
 {
 	int i = 0;
 		for (i = 0; i < SIZE; i++)
-			sine_values[i] = i;
+			sine_values[i] = sin(i);
 }
-void display_options(void) //function inside of while loop before options if-else branching, displays options
+void display_options(void) //function loop before options if-else branching, displays options
 {
 	cout <<  "Formulas for which you can display values:" << endl
 	     << "   " << "1. y = a sin(x)" << endl
@@ -105,30 +106,23 @@ void initialize_option_1(double& a)
 	cin >> a;
 	cout << endl;
 }
-void calculate_option_1(double a, double& y)
+void calculate_option_1(double a)
 {
 	int i = 0;
+	double option1[SIZE];
+	cout << setw(7) << "x" << setw(11) << "y" << endl;
+	cout << setw (7) << "--"<< setw(11)<< "-----" << endl;
 	
 	for (i = 0; i < SIZE; i++)
 	{	
-		sine_values[i] = a*sin(i);
-		y = sine_values[i];
+		option1[i] = a*sine_values[i]; //array option1 is the y. need a new array here to store the new sine values to, or it will store over the original precalculated values---that will make the next option's calculations options wrong, e.g., instead of adding two to the precalcluated sine values, it will add 2 to the new calcluated sine values
+		
+		std::cout <<
+		std::fixed <<
+		std::setprecision(3);
+		cout << setw(7) << i;
+		cout << setw(11) << option1[i] << endl;
 	}
-}
-void display_option_1(void)
-{
-	int i = 0;
-	cout << setw(7) << "x" << setw(11) << "y" << endl;
-	cout << setw (7) << "--"<< setw(11)<< "-----" << endl;
-		for (i = 0; i < SIZE; i++)
-		{
-			std::cout <<
-			std::fixed <<
-			std::setprecision(3);
-			cout << setw(7) << i;
-			cout << setw(11) << sine_values[i] << endl;
-		}
-	cout << endl;
 }
 
 //all function for option 2
@@ -138,32 +132,24 @@ void initialize_option_2(double& b)
 	cin >> b;
 	cout << endl;
 }
-void calculate_option_2(double b, double& y)
+void calculate_option_2(double b)
 {
 	int i = 0;
+	double option2[SIZE];
+	cout << setw(7) << "x" << setw(11) << "y" << endl;
+	cout << setw (7) << "--"<< setw(11)<< "-----" << endl;
 	
 	for (i = 0; i < SIZE; i++)
 	{	
-		sine_values[i] = sin(i) + b;
-		y = sine_values[i];
+		option2[i] = sine_values[i] + b; //array option2 is the y. need new array so these results stay independent from the original precalculated sine vales and the other calculated sine values
+		
+		std::cout <<
+		std::fixed <<
+		std::setprecision(3);
+		cout << setw(7) << i;
+		cout << setw(11) << option2[i] << endl;
 	}
 }
-void display_option_2(void)
-{
-	int i = 0;
-	cout << setw(7) << "x" << setw(11) << "y" << endl;
-	cout << setw (7) << "--"<< setw(11)<< "-----" << endl;
-		for (i = 0; i < SIZE; i++)
-		{
-			std::cout <<
-			std::fixed <<
-			std::setprecision(3);
-			cout << setw(7) << i;
-			cout << setw(11) << sine_values[i] << endl;
-		}
-	cout << endl;
-}
-
 
 //all functions for option 3
 void initialize_option_3(double& a, double& b)
@@ -175,28 +161,21 @@ void initialize_option_3(double& a, double& b)
 	cout << endl;
 	
 }
-void calculate_option_3(double a, double b, double& y)
+void calculate_option_3(double a, double b)
 {
 		int i = 0;
+		double option3[SIZE];
+	cout << setw(7) << "x" << setw(11) << "y" << endl;
+	cout << setw (7) << "--"<< setw(11)<< "-----" << endl;
 	
 	for (i = 0; i < SIZE; i++)
 	{	
-		sine_values[i] = (a*sin(i)) + b;
-		y = sine_values[i];
+		option3[i] = (a*sine_values[i]) + b; //option3 array is y
+		
+		std::cout <<
+		std::fixed <<
+		std::setprecision(3);
+		cout << setw(7) << i;
+		cout << setw(11) << option3[i] << endl;
 	}
-}
-void display_option_3(void)
-{
-	int i = 0;
-	cout << setw(7) << "x" << setw(11) << "y" << endl;
-	cout << setw (7) << "--"<< setw(11)<< "-----" << endl;
-		for (i = 0; i < SIZE; i++)
-		{
-			std::cout <<
-			std::fixed <<
-			std::setprecision(3);
-			cout << setw(7) << i;
-			cout << setw(11) << sine_values[i] << endl;
-		}
-	cout << endl;
 }
